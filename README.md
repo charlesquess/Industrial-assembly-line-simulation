@@ -1,5 +1,5 @@
-INDUSTRIAL ASSEMBLY LINE SIMULATION
-流水线工业装配模拟
+# INDUSTRIAL ASSEMBLY LINE SIMULATION
+# 流水线工业装配模拟
 # 程序结构：
 ```text
 |- main.py 主程序文件
