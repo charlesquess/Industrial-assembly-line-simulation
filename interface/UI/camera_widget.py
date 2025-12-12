@@ -702,6 +702,10 @@ class CameraWidget(QWidget):
         layout.addSpacing(10)
         
         # 工具按钮
+        self.debug_btn = QPushButton("调试")
+        self.debug_btn.clicked.connect(self.debug_signal_connections)
+        layout.addWidget(self.debug_btn)
+        
         self.roi_btn = QPushButton("ROI")
         self.roi_btn.clicked.connect(self.video_display.start_roi_selection)
         layout.addWidget(self.roi_btn)
@@ -822,9 +826,36 @@ class CameraWidget(QWidget):
     def connect_signals(self):
         """连接信号"""
         # 摄像头管理器信号
-        if hasattr(self.camera_manager, 'frame_received'):
+        try:
+            # 直接连接信号
             self.camera_manager.frame_received.connect(self.on_frame_received)
-        
+            self.logger.info("成功连接 frame_received 信号")
+            
+            # 连接其他信号
+            self.camera_manager.camera_connected.connect(self.on_camera_connected)
+            self.camera_manager.camera_disconnected.connect(self.on_camera_disconnected)
+            self.camera_manager.camera_error.connect(self.on_camera_error)
+        except Exception as e:
+            self.logger.error(f"连接信号失败: {e}")
+            QMessageBox.warning(self, "信号连接错误", f"无法连接摄像头信号: {e}")
+
+    def on_camera_connected(self, camera_id, camera_info):
+        """摄像头连接成功"""
+        self.logger.info(f"摄像头 {camera_id} 连接成功")
+        self._camera_connected = True
+        self.camera_connected.emit()
+
+    def on_camera_disconnected(self, camera_id):
+        """摄像头断开连接"""
+        self.logger.info(f"摄像头 {camera_id} 断开连接")
+        self._camera_connected = False
+        self.camera_disconnected.emit()
+
+    def on_camera_error(self, camera_id, error_message):
+        """摄像头错误"""
+        self.logger.error(f"摄像头 {camera_id} 错误: {error_message}")
+        QMessageBox.critical(self, "摄像头错误", error_message)
+
         # 控制面板信号
         self.control_panel.camera_settings_changed.connect(
             self.on_camera_settings_changed
@@ -852,19 +883,93 @@ class CameraWidget(QWidget):
     def connect_camera(self, camera_index):
         """连接摄像头"""
         try:
-            if self.camera_manager.connect_camera(camera_index):
-                self._camera_connected = True
-                self.camera_connected.emit()
-                self.camera_selected.emit(camera_index)
-                self.logger.info(f"摄像头 {camera_index} 连接成功")
+            # 生成摄像头ID
+            camera_id = f"usb_{camera_index}"
+            
+            self.logger.info(f"正在连接摄像头 {camera_id} (索引: {camera_index})")
+            
+            # 断开已连接的摄像头
+            if self.camera_manager.is_camera_connected():
+                self.camera_manager.disconnect_camera()
+            
+            # 连接新摄像头
+            if self.camera_manager.connect_camera(camera_id, "usb", device_id=camera_index):
+                # 启动视频捕获
+                if self.camera_manager.start_capture():
+                    self._camera_connected = True
+                    self.camera_connected.emit()
+                    self.camera_selected.emit(camera_index)
+                    self.logger.info(f"摄像头 {camera_index} 连接并启动成功")
+                    
+                    # 更新UI状态
+                    self.update_camera_status_display(True)
+                else:
+                    self.logger.error("启动视频捕获失败")
+                    self._camera_connected = False
+                    QMessageBox.critical(self, "摄像头错误", "启动视频捕获失败")
             else:
                 self.logger.error(f"摄像头 {camera_index} 连接失败")
                 self._camera_connected = False
+                QMessageBox.critical(self, "摄像头错误", f"摄像头 {camera_index} 连接失败")
+                
         except Exception as e:
-            self.logger.error(f"摄像头连接错误: {e}")
+            self.logger.error(f"摄像头连接错误: {e}", exc_info=True)
             QMessageBox.critical(self, "摄像头错误", f"连接失败: {str(e)}")
             self._camera_connected = False
-    
+
+    def update_camera_status_display(self, connected):
+        """更新摄像头状态显示"""
+        if connected:
+            self.control_panel.connect_btn.setEnabled(False)
+            self.control_panel.disconnect_btn.setEnabled(True)
+            self.control_panel.camera_combo.setEnabled(False)
+            
+            # 更新状态标签
+            camera_info = self.camera_manager.get_camera_info()
+            if camera_info:
+                camera_name = getattr(camera_info, 'name', f"摄像头")
+                self.status_label.setText(f"已连接: {camera_name}")
+        else:
+            self.control_panel.connect_btn.setEnabled(True)
+            self.control_panel.disconnect_btn.setEnabled(False)
+            self.control_panel.camera_combo.setEnabled(True)
+            self.status_label.setText("未连接")
+
+    def debug_signal_connections(self):
+        """调试信号连接状态"""
+        try:
+            self.logger.info("=== 开始信号连接调试 ===")
+            
+            # 检查 frame_received 信号
+            if hasattr(self.camera_manager, 'frame_received'):
+                self.logger.info("CameraManager 有 frame_received 信号")
+                
+                # 检查信号是否已连接
+                connected = self.camera_manager.frame_received.receivers() > 0
+                self.logger.info(f"frame_received 信号接收器数量: {self.camera_manager.frame_received.receivers()}")
+                self.logger.info(f"frame_received 信号已连接: {connected}")
+            else:
+                self.logger.error("CameraManager 没有 frame_received 信号！")
+            
+            # 列出所有信号
+            signals = []
+            for attr_name in dir(self.camera_manager):
+                attr = getattr(self.camera_manager, attr_name)
+                if isinstance(attr, pyqtSignal):
+                    signals.append(attr_name)
+            
+            self.logger.info(f"CameraManager 所有信号: {signals}")
+            
+            # 检查摄像头状态
+            self.logger.info(f"摄像头管理器连接状态: {self.camera_manager.is_camera_connected()}")
+            self.logger.info(f"内部连接状态: {self._camera_connected}")
+            self.logger.info(f"摄像头正在捕获: {self.camera_manager.is_capturing()}")
+            
+            self.logger.info("=== 信号连接调试结束 ===")
+            
+        except Exception as e:
+            self.logger.error(f"调试信号连接时出错: {e}")
+
     def disconnect_camera(self):
         """断开摄像头"""
         try:
@@ -884,17 +989,45 @@ class CameraWidget(QWidget):
     @pyqtSlot(object)
     def on_frame_received(self, frame_info):
         """接收到新帧"""
-        frame = frame_info.get('frame')
-        if frame is not None:
-            # 处理图像（如果需要）
+        if not frame_info:
+            self.logger.debug("接收到空帧信息")
+            return
+        
+        try:
+            # 提取帧数据
+            if isinstance(frame_info, dict):
+                frame = frame_info.get('frame')
+            else:
+                # 如果是 FrameInfo 对象
+                frame = getattr(frame_info, 'frame', None)
+            
+            if frame is None or frame.size == 0:
+                self.logger.debug("接收到空帧或无帧数据")
+                return
+            
+            self.logger.debug(f"接收到帧: {frame.shape}, 类型: {type(frame)}")
+            
+            # 处理图像
             processed_frame = self.process_frame(frame)
             
             # 更新显示
-            self.video_display.set_frame(processed_frame)
-            
-            # 录制视频
-            if self.is_recording and self.video_writer is not None:
-                self.video_writer.write(processed_frame)
+            if processed_frame is not None and processed_frame.size > 0:
+                self.video_display.set_frame(processed_frame)
+                
+                # 录制视频
+                if self.is_recording and self.video_writer is not None:
+                    # 确保帧是BGR格式
+                    if len(processed_frame.shape) == 2:
+                        processed_frame = cv2.cvtColor(processed_frame, cv2.COLOR_GRAY2BGR)
+                    elif processed_frame.shape[2] == 3:
+                        # 确保是BGR格式
+                        pass
+                    self.video_writer.write(processed_frame)
+            else:
+                self.logger.warning("处理后的帧为空")
+                
+        except Exception as e:
+            self.logger.error(f"处理接收到的帧时出错: {e}", exc_info=True)
     
     def process_frame(self, frame):
         """处理图像帧"""
@@ -929,7 +1062,7 @@ class CameraWidget(QWidget):
     
     def capture_image(self):
         """捕获图像"""
-        if not self.camera_manager.is_connected():
+        if not self.camera_manager.is_camera_connected():
             QMessageBox.warning(self, "警告", "请先连接摄像头")
             return
         
@@ -966,20 +1099,14 @@ class CameraWidget(QWidget):
             return
         
         try:
-            # 获取摄像头信息
-            camera_info = self.camera_manager.get_camera_info()
-            if not camera_info:
-                raise ValueError("无法获取摄像头信息")
+            # 获取录制参数
+            width, height, fps = self.get_recording_parameters()
             
             # 创建视频写入器
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"recording_{timestamp}.avi"
             save_path = Path("recordings") / filename
             save_path.parent.mkdir(exist_ok=True)
-            
-            fps = camera_info.get('fps', 30)
-            width = camera_info.get('width', 640)
-            height = camera_info.get('height', 480)
             
             fourcc = cv2.VideoWriter_fourcc(*'XVID')
             self.video_writer = cv2.VideoWriter(
@@ -994,12 +1121,38 @@ class CameraWidget(QWidget):
             
             # 更新UI
             self.recording_label.setText("● 录制中")
-            self.logger.info(f"开始录制视频: {save_path}")
+            self.logger.info(f"开始录制视频: {save_path}, 分辨率: {width}x{height}, 帧率: {fps}")
             
         except Exception as e:
             self.logger.error(f"开始录制错误: {e}")
             QMessageBox.critical(self, "错误", f"开始录制失败: {str(e)}")
             self.control_panel.record_btn.setChecked(False)
+
+    def get_recording_parameters(self):
+        """获取录制参数"""
+        width, height = 640, 480  # 默认值
+        fps = 30  # 默认帧率
+        
+        try:
+            # 尝试从摄像头设置获取
+            settings = self.camera_manager.get_camera_settings()
+            if settings:
+                width, height = settings.resolution
+            
+            # 尝试从摄像头信息获取
+            info = self.camera_manager.get_camera_info()
+            if info and hasattr(info, 'capabilities'):
+                caps = info.capabilities
+                if isinstance(caps, dict):
+                    width = caps.get('width', width)
+                    height = caps.get('height', height)
+                    fps = caps.get('fps', fps)
+            
+            return width, height, fps
+            
+        except Exception as e:
+            self.logger.warning(f"获取录制参数失败，使用默认值: {e}")
+            return width, height, fps
 
     def is_camera_connected(self):
         """检查摄像头是否连接"""
@@ -1024,7 +1177,7 @@ class CameraWidget(QWidget):
     
     def take_snapshot(self):
         """拍摄快照"""
-        if not self.camera_manager.is_connected():
+        if not self.camera_manager.is_camera_connected():
             return
         
         frame = self.camera_manager.capture_frame()

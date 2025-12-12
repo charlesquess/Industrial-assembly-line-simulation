@@ -356,3 +356,238 @@ AttributeError: type object 'ApplicationAttribute' has no attribute 'AA_EnableHi
 2025-12-12 09:49:53,049 - UI.main_window - INFO - 主窗口初始化完成
 2025-12-12 09:49:53,098 - UI.main_window - INFO - 主窗口显示完成
 2025-12-12 09:49:53,111 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 10:39:24,811 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 10:39:24,838 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 10:39:24,843 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 10:39:24,843 - config.settings - INFO - 配置加载成功
+2025-12-12 10:39:24,844 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 10:39:24,844 - __main__ - INFO - 初始化主窗口
+2025-12-12 10:39:24,844 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 10:39:24,845 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 10:39:24,845 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 10:39:24,847 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 10:39:24,847 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 10:39:24,848 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 10:39:24,848 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 10:39:24,870 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 10:39:24,879 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 10:39:24,891 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 10:39:24,891 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 10:39:24,939 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 10:39:24,988 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 10:39:25,007 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 10:39:34,738 - UI.camera_widget - INFO - 刷新摄像头列表
+2025-12-12 10:39:45,436 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 10:39:45,439 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 10:39:45,439 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 10:39:45,439 - core.camera_manager - ERROR - 连接摄像头失败: CameraManager.camera_connected[str, object].emit(): argument 1 has unexpected type 'int'
+2025-12-12 10:39:45,440 - UI.camera_widget - ERROR - 摄像头连接错误: CameraManager.camera_error[str, str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 10:43:38,951 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 10:43:38,982 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 10:43:38,987 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 10:43:38,987 - config.settings - INFO - 配置加载成功
+2025-12-12 10:43:38,987 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 10:43:38,988 - __main__ - INFO - 初始化主窗口
+2025-12-12 10:43:38,989 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 10:43:38,989 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 10:43:38,989 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 10:43:39,005 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 10:43:39,005 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 10:43:39,006 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 10:43:39,006 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 10:43:39,026 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 10:43:39,036 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 10:43:39,048 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 10:43:39,049 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 10:43:39,103 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 10:43:39,147 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 10:43:39,158 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 10:43:50,044 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 10:43:50,047 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 10:43:50,047 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 10:43:50,048 - core.camera_manager - ERROR - 连接摄像头失败: CameraManager.camera_connected[str, object].emit(): argument 1 has unexpected type 'int'
+2025-12-12 10:43:50,048 - UI.camera_widget - ERROR - 摄像头连接错误: CameraManager.camera_error[str, str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 10:43:55,337 - core.camera_manager.usb - INFO - USB摄像头 0 已断开
+2025-12-12 10:43:55,338 - core.camera_manager - ERROR - 断开摄像头失败: CameraManager.camera_disconnected[str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 10:43:56,489 - UI.camera_widget - INFO - 摄像头已断开
+2025-12-12 10:44:00,326 - UI.camera_widget - INFO - 刷新摄像头列表
+2025-12-12 10:44:09,203 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 10:44:09,205 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 10:44:09,205 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 10:44:09,205 - core.camera_manager - ERROR - 连接摄像头失败: CameraManager.camera_connected[str, object].emit(): argument 1 has unexpected type 'int'
+2025-12-12 10:44:09,205 - UI.camera_widget - ERROR - 摄像头连接错误: CameraManager.camera_error[str, str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 10:45:51,600 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 10:45:51,628 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 10:45:51,633 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 10:45:51,633 - config.settings - INFO - 配置加载成功
+2025-12-12 10:45:51,633 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 10:45:51,633 - __main__ - INFO - 初始化主窗口
+2025-12-12 10:45:51,634 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 10:45:51,635 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 10:45:51,635 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 10:45:51,649 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 10:45:51,650 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 10:45:51,651 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 10:45:51,651 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 10:45:51,670 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 10:45:51,678 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 10:45:51,687 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 10:45:51,688 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 10:45:51,722 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 10:45:51,765 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 10:45:51,769 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 10:46:01,004 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 10:46:01,007 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 10:46:01,007 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 10:46:01,008 - core.camera_manager - INFO - 摄像头 0 连接成功
+2025-12-12 10:46:01,008 - core.camera_manager - WARNING - 摄像头 0 不存在
+2025-12-12 10:46:01,008 - UI.camera_widget - INFO - 摄像头 0 连接成功
+2025-12-12 10:48:08,648 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 10:48:08,677 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 10:48:08,682 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 10:48:08,682 - config.settings - INFO - 配置加载成功
+2025-12-12 10:48:08,682 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 10:48:08,682 - __main__ - INFO - 初始化主窗口
+2025-12-12 10:48:08,683 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 10:48:08,684 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 10:48:08,684 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 10:48:08,701 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 10:48:08,702 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 10:48:08,702 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 10:48:08,702 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 10:48:08,726 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 10:48:08,734 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 10:48:08,744 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 10:48:08,744 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 10:48:08,786 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 10:48:08,834 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 10:48:08,842 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 10:48:18,058 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 10:48:18,060 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 10:48:18,060 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 10:48:18,061 - core.camera_manager - INFO - 摄像头 0 连接成功
+2025-12-12 10:48:18,061 - core.camera_manager - WARNING - 摄像头 0 不存在
+2025-12-12 10:48:18,061 - UI.camera_widget - INFO - 摄像头 0 连接成功
+2025-12-12 10:48:25,105 - UI.camera_widget - ERROR - 开始录制错误: 'CameraInfo' object has no attribute 'get'
+2025-12-12 10:48:26,965 - UI.camera_widget - INFO - 录制已停止
+2025-12-12 11:00:38,266 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 11:00:38,294 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 11:00:38,299 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 11:00:38,299 - config.settings - INFO - 配置加载成功
+2025-12-12 11:00:38,299 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 11:00:38,299 - __main__ - INFO - 初始化主窗口
+2025-12-12 11:00:38,300 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 11:00:38,301 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 11:00:38,301 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 11:00:38,317 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 11:00:38,318 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 11:00:38,318 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 11:00:38,318 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 11:00:38,339 - UI.camera_widget - INFO - 成功连接 frame_received 信号
+2025-12-12 11:00:38,339 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 11:00:38,348 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 11:00:38,360 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 11:00:38,360 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 11:00:38,400 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 11:00:38,449 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 11:00:38,467 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 11:00:46,439 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 11:00:46,442 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 11:00:46,442 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 11:00:46,443 - core.camera_manager - INFO - 摄像头 0 连接成功
+2025-12-12 11:00:46,443 - core.camera_manager - WARNING - 摄像头 0 不存在
+2025-12-12 11:00:46,443 - UI.camera_widget - INFO - 摄像头 0 连接成功
+2025-12-12 11:00:57,867 - UI.camera_widget - ERROR - 开始录制错误: 'CameraInfo' object has no attribute 'get'
+2025-12-12 11:01:00,294 - UI.camera_widget - INFO - 录制已停止
+2025-12-12 11:01:17,794 - core.camera_manager.usb - INFO - USB摄像头 0 已断开
+2025-12-12 11:01:17,794 - core.camera_manager - INFO - 摄像头 0 已断开
+2025-12-12 11:01:17,794 - UI.camera_widget - INFO - 摄像头已断开
+2025-12-12 11:01:26,823 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 11:01:26,825 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 11:01:26,825 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 11:01:26,825 - core.camera_manager - INFO - 摄像头 0 连接成功
+2025-12-12 11:01:26,825 - core.camera_manager - WARNING - 摄像头 0 不存在
+2025-12-12 11:01:26,825 - UI.camera_widget - INFO - 摄像头 0 连接成功
+2025-12-12 11:05:35,868 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 11:05:35,898 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 11:05:35,903 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 11:05:35,904 - config.settings - INFO - 配置加载成功
+2025-12-12 11:05:35,904 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 11:05:35,904 - __main__ - INFO - 初始化主窗口
+2025-12-12 11:05:35,905 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 11:05:35,906 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 11:05:35,906 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 11:05:35,925 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 11:05:35,925 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 11:05:35,925 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 11:05:35,925 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 11:05:35,944 - UI.camera_widget - INFO - 成功连接 frame_received 信号
+2025-12-12 11:05:35,945 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 11:05:35,953 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 11:05:35,962 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 11:05:35,962 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 11:05:36,006 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 11:05:36,064 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 11:05:36,079 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 11:05:44,794 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 11:05:44,797 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 11:05:44,797 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 11:05:44,797 - core.camera_manager - INFO - 摄像头 0 连接成功
+2025-12-12 11:05:44,797 - core.camera_manager - WARNING - 摄像头 0 不存在
+2025-12-12 11:05:44,798 - UI.camera_widget - INFO - 摄像头 0 连接成功
+2025-12-12 11:05:49,374 - UI.camera_widget - INFO - 开始录制视频: recordings\recording_20251212_110549.avi, 分辨率: 640x480, 帧率: 30
+2025-12-12 11:05:52,224 - UI.camera_widget - INFO - 停止录制，时长: 2.9秒
+2025-12-12 11:05:52,224 - UI.camera_widget - INFO - 录制已停止
+2025-12-12 11:13:33,440 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 11:13:33,468 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 11:13:33,474 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 11:13:33,474 - config.settings - INFO - 配置加载成功
+2025-12-12 11:13:33,474 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 11:13:33,475 - __main__ - INFO - 初始化主窗口
+2025-12-12 11:13:33,476 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 11:13:33,476 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 11:13:33,476 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 11:13:33,485 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 11:13:33,486 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 11:13:33,486 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 11:13:33,486 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 11:13:33,506 - UI.camera_widget - INFO - 成功连接 frame_received 信号
+2025-12-12 11:13:33,506 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 11:13:33,514 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 11:13:33,525 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 11:13:33,525 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 11:13:33,561 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 11:13:33,604 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 11:13:33,615 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 11:13:51,126 - core.camera_manager - INFO - 发现 1 个可用摄像头
+2025-12-12 11:13:57,272 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 11:13:57,276 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 11:13:57,276 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 11:13:57,276 - UI.camera_widget - INFO - 摄像头 usb_0 连接成功
+2025-12-12 11:13:57,276 - core.camera_manager - INFO - 摄像头 usb_0 连接成功
+2025-12-12 11:13:57,280 - core.camera_manager.usb - INFO - 开始视频捕获
+2025-12-12 11:13:57,280 - core.camera_manager - INFO - 视频捕获已开始
+2025-12-12 11:14:06,134 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 11:14:06,162 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 11:14:06,167 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 11:14:06,167 - config.settings - INFO - 配置加载成功
+2025-12-12 11:14:06,167 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 11:14:06,167 - __main__ - INFO - 初始化主窗口
+2025-12-12 11:14:06,168 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 11:14:06,169 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 11:14:06,169 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 11:14:06,184 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 11:14:06,185 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 11:14:06,185 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 11:14:06,185 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 11:14:06,205 - UI.camera_widget - INFO - 成功连接 frame_received 信号
+2025-12-12 11:14:06,205 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 11:14:06,213 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 11:14:06,222 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 11:14:06,222 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 11:14:06,260 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 11:14:06,306 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 11:14:06,318 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 11:14:57,488 - UI.camera_widget - INFO - === 开始信号连接调试 ===
+2025-12-12 11:14:57,489 - UI.camera_widget - INFO - CameraManager 有 frame_received 信号
+2025-12-12 11:14:57,489 - UI.camera_widget - ERROR - 调试信号连接时出错: 'PyQt6.QtCore.pyqtBoundSignal' object has no attribute 'receivers'

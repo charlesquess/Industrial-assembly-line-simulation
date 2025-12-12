@@ -606,11 +606,13 @@ class CameraManager(QObject):
     """摄像头管理器"""
     
     # 信号定义
-    frame_received = pyqtSignal(object)  # FrameInfo
+    frame_received = pyqtSignal(object)  # 发送帧数据 (FrameInfo 或 dict)
     camera_connected = pyqtSignal(str, object)  # camera_id, CameraInfo
     camera_disconnected = pyqtSignal(str)  # camera_id
     camera_error = pyqtSignal(str, str)  # camera_id, error_message
     camera_list_updated = pyqtSignal(list)  # List[CameraInfo]
+    camera_settings_changed = pyqtSignal(dict)  # 摄像头设置变化
+    capture_started = pyqtSignal()  # 捕获开始信号
     
     def __init__(self):
         """初始化摄像头管理器"""
@@ -677,6 +679,9 @@ class CameraManager(QObject):
         """连接摄像头"""
         try:
             with QMutexLocker(self.camera_lock):
+                # 确保 camera_id 是字符串类型
+                camera_id = str(camera_id)
+                
                 # 检查摄像头是否已存在
                 if camera_id in self.cameras:
                     camera = self.cameras[camera_id]
@@ -700,16 +705,22 @@ class CameraManager(QObject):
                     self.current_camera = camera
                     
                     # 获取摄像头信息
-                    camera_info = camera.get_info()
+                    camera_info = camera.get_info()  # 获取的是 CameraInfo 对象
                     
                     # 发出连接信号
-                    self.camera_connected.emit(camera_id, camera_info)
+                    self.camera_connected.emit(camera_id, camera_info)  # 确保 camera_id 是字符串类型
                     
                     self.logger.info(f"摄像头 {camera_id} 连接成功")
                     return True
                 else:
                     self.logger.error(f"摄像头 {camera_id} 连接失败")
                     return False
+                    
+        except Exception as e:
+            error_msg = f"连接摄像头失败: {str(e)}"
+            self.logger.error(error_msg)
+            self.camera_error.emit(camera_id, error_msg)
+            return False
                     
         except Exception as e:
             error_msg = f"连接摄像头失败: {str(e)}"
@@ -811,15 +822,35 @@ class CameraManager(QObject):
             self.logger.error(f"捕获单帧失败: {e}")
             return None
     
-    def get_camera_info(self, camera_id: Optional[str] = None) -> Optional[CameraInfo]:
-        """获取摄像头信息"""
+    def get_camera_info(self, camera_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """获取摄像头信息（返回字典格式）"""
         try:
             with QMutexLocker(self.camera_lock):
                 if camera_id is None and self.current_camera:
                     camera_id = self.current_camera.camera_id
                 
                 if camera_id in self.cameras:
-                    return self.cameras[camera_id].get_info()
+                    camera = self.cameras[camera_id]
+                    info = camera.get_info()
+                    
+                    # 转换为字典格式
+                    info_dict = {
+                        'id': info.id,
+                        'name': info.name,
+                        'device_id': info.device_id,
+                        'model': info.model,
+                        'vendor': info.vendor,
+                        'serial_number': info.serial_number,
+                        'is_connected': info.is_connected,
+                        'capabilities': info.capabilities,
+                        'current_settings': info.current_settings
+                    }
+                    
+                    # 添加额外的信息
+                    if hasattr(info, 'capabilities') and isinstance(info.capabilities, dict):
+                        info_dict.update(info.capabilities)
+                    
+                    return info_dict
                 
                 return None
                 
@@ -999,14 +1030,22 @@ class CameraManager(QObject):
     def _process_frames(self):
         """处理帧数据"""
         try:
-            if not self.current_camera or not self.current_camera.is_capturing:
+            if not self.current_camera:
+                self.logger.debug("当前没有活动的摄像头")
+                return
+            
+            if not self.current_camera.is_capturing:
+                self.logger.debug("摄像头未在捕获状态")
                 return
             
             # 获取帧
             if isinstance(self.current_camera, USBCamera):
                 frame_info = self.current_camera.get_frame()
                 if frame_info:
-                    self.frame_received.emit({
+                    self.logger.debug(f"从USB摄像头获取到帧: {frame_info.frame.shape if frame_info.frame is not None else 'None'}")
+                    
+                    # 构建帧信息字典
+                    frame_data = {
                         'frame': frame_info.frame,
                         'timestamp': frame_info.timestamp,
                         'frame_id': frame_info.frame_id,
@@ -1014,11 +1053,19 @@ class CameraManager(QObject):
                         'width': frame_info.frame_size[0],
                         'height': frame_info.frame_size[1],
                         'fps': frame_info.frame_rate
-                    })
+                    }
+                    
+                    # 发射信号
+                    self.frame_received.emit(frame_data)
+                else:
+                    self.logger.debug("从USB摄像头获取帧失败或队列为空")
             else:
+                # 处理其他类型的摄像头
                 frame = self.current_camera.get_frame()
                 if frame is not None:
-                    self.frame_received.emit({
+                    self.logger.debug(f"从摄像头获取到帧: {frame.shape}")
+                    
+                    frame_data = {
                         'frame': frame,
                         'timestamp': datetime.now(),
                         'frame_id': -1,
@@ -1026,10 +1073,14 @@ class CameraManager(QObject):
                         'width': frame.shape[1],
                         'height': frame.shape[0],
                         'fps': 0
-                    })
+                    }
+                    
+                    self.frame_received.emit(frame_data)
+                else:
+                    self.logger.debug("从摄像头获取帧失败")
                     
         except Exception as e:
-            self.logger.error(f"处理帧数据错误: {e}")
+            self.logger.error(f"处理帧数据错误: {e}", exc_info=True)
     
     def _discover_cameras(self):
         """定期发现摄像头"""

@@ -402,7 +402,26 @@ class MainWindow(QMainWindow):
         # 更新摄像头信息
         camera_info = self.camera_manager.get_camera_info()
         if camera_info:
-            self.resolution_label.setText(f"分辨率: {camera_info.get('width', 'N/A')}x{camera_info.get('height', 'N/A')}")
+            # 检查 camera_info 是字典还是对象
+            if isinstance(camera_info, dict):
+                # 如果是字典
+                width = camera_info.get('width', 'N/A')
+                height = camera_info.get('height', 'N/A')
+            else:
+                # 如果是对象，访问属性
+                if hasattr(camera_info, 'capabilities'):
+                    caps = camera_info.capabilities
+                    if isinstance(caps, dict):
+                        width = caps.get('width', 'N/A')
+                        height = caps.get('height', 'N/A')
+                    else:
+                        width = 'N/A'
+                        height = 'N/A'
+                else:
+                    width = 'N/A'
+                    height = 'N/A'
+            
+            self.resolution_label.setText(f"分辨率: {width}x{height}")
 
     def on_camera_disconnected(self):
         """摄像头断开连接处理"""
@@ -416,9 +435,22 @@ class MainWindow(QMainWindow):
 
     def on_frame_received(self, frame_info):
         """接收到新帧处理"""
-        # 更新FPS显示
-        fps = frame_info.get('fps', 0)
-        self.fps_label.setText(f"FPS: {fps:.1f}")
+        try:
+            # 更新FPS显示
+            fps = frame_info.get('fps', 0)
+            if fps > 0:
+                self.fps_label.setText(f"FPS: {fps:.1f}")
+            
+            # 更新摄像头信息
+            if self.camera_manager.is_camera_connected():
+                camera_info = self.camera_manager.get_camera_info()
+                if camera_info:
+                    self.resolution_label.setText(
+                        f"分辨率: {camera_info.get('width', 'N/A')}x{camera_info.get('height', 'N/A')}"
+                    )
+        
+        except Exception as e:
+            self.logger.error(f"处理帧信息时出错: {e}")
 
     def on_camera_error(self, error_message):
         """摄像头错误处理"""
@@ -491,18 +523,33 @@ class MainWindow(QMainWindow):
 
     def connect_camera(self):
         """连接摄像头"""
-        # 获取可用摄像头列表
-        cameras = self.camera_manager.list_available_cameras()
+        try:
+            # 获取可用摄像头列表
+            cameras = self.camera_manager.get_available_cameras()
+            
+            if not cameras:
+                QMessageBox.warning(self, "警告", "未检测到可用摄像头")
+                return
+            
+            # 选择第一个可用的摄像头
+            if cameras:
+                camera_info = cameras[0]
+                camera_id = camera_info['id']
+                
+                if self.camera_manager.connect_camera(camera_id, camera_info['type'], 
+                                                    device_id=camera_info['device_id']):
+                    # 启动视频捕获
+                    self.camera_manager.start_capture()
+                    
+                    # 更新状态
+                    self.camera_connected.emit(camera_info['name'])
+                    self.status_label.setText(f"摄像头 {camera_info['name']} 连接成功")
+                else:
+                    QMessageBox.critical(self, "错误", "摄像头连接失败")
         
-        if not cameras:
-            QMessageBox.warning(self, "警告", "未检测到可用摄像头")
-            return
-        
-        # 选择摄像头（这里简单选择第一个）
-        if self.camera_manager.connect_camera(0):
-            self.camera_connected.emit(f"摄像头 {0}")
-        else:
-            QMessageBox.critical(self, "错误", "摄像头连接失败")
+        except Exception as e:
+            self.logger.error(f"连接摄像头失败: {e}")
+            QMessageBox.critical(self, "错误", f"连接失败: {str(e)}")
 
     def disconnect_camera(self):
         """断开摄像头"""
@@ -513,7 +560,7 @@ class MainWindow(QMainWindow):
 
     def start_inference(self):
         """开始检测"""
-        if not self.camera_manager.is_connected():
+        if not self.camera_manager.is_camera_connected():
             QMessageBox.warning(self, "警告", "请先连接摄像头")
             return
         
@@ -540,7 +587,7 @@ class MainWindow(QMainWindow):
 
     def capture_single_frame(self):
         """单帧捕获"""
-        if not self.camera_manager.is_connected():
+        if not self.camera_manager.is_camera_connected():
             QMessageBox.warning(self, "警告", "请先连接摄像头")
             return
         
