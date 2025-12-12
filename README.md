@@ -1,6 +1,7 @@
 INDUSTRIAL ASSEMBLY LINE SIMULATION
 流水线工业装配模拟
 # 程序结构：
+```text
 |- main.py 主程序文件
 |- resources 资源文件夹
 |- |- icons 图标文件夹
@@ -20,3 +21,4 @@ INDUSTRIAL ASSEMBLY LINE SIMULATION
 |- |- settings.py 配置文件
 |- utils 工具文件夹
 |- |- helpers.py 辅助函数文件
+```
