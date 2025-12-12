@@ -1,0 +1,33 @@
+{
+  "window_width": 1200,
+  "window_height": 800,
+  "window_maximized": false,
+  "theme": "dark",
+  "last_image_dir": "",
+  "last_model_dir": "",
+  "last_export_dir": "",
+  "camera": {
+    "camera_id": 0,
+    "resolution_width": 1280,
+    "resolution_height": 720,
+    "fps": 30,
+    "auto_exposure": true,
+    "brightness": 0,
+    "contrast": 0
+  },
+  "model": {
+    "model_path": "",
+    "model_name": "",
+    "confidence_threshold": 0.5,
+    "iou_threshold": 0.45,
+    "input_size": 640,
+    "use_gpu": true
+  },
+  "analysis": {
+    "save_results": true,
+    "save_path": "resources/data/results",
+    "export_format": "json",
+    "auto_save_interval": 60,
+    "show_confidence": true
+  }
+}

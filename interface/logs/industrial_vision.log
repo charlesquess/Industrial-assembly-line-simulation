@@ -1,0 +1,358 @@
+2025-12-11 17:26:57,286 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-11 17:26:57,359 - __main__ - ERROR - 应用程序启动失败: type object 'ApplicationAttribute' has no attribute 'AA_EnableHighDpiScaling'
+Traceback (most recent call last):
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\main.py", line 74, in main
+    setup_application_style(app)
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\main.py", line 56, in setup_application_style
+    app.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling, True)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'ApplicationAttribute' has no attribute 'AA_EnableHighDpiScaling'
+2025-12-11 17:27:18,385 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-11 17:27:18,420 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-11 17:27:18,420 - config.settings - WARNING - 配置文件不存在，使用默认设置
+2025-12-11 17:27:18,421 - config.settings - INFO - 保存配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-11 17:27:18,426 - config.settings - INFO - 配置保存成功
+2025-12-11 17:27:18,426 - config.settings - INFO - 配置管理器初始化完成
+2025-12-11 17:27:18,426 - __main__ - INFO - 初始化主窗口
+2025-12-11 17:27:18,437 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-11 17:27:18,438 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-11 17:27:18,438 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-11 17:27:18,449 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-11 17:27:18,454 - core.data_manager - INFO - 数据库表创建成功
+2025-12-11 17:27:18,454 - core.data_manager - INFO - 数据库初始化成功
+2025-12-11 17:27:18,454 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-11 17:27:18,545 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-11 17:27:18,564 - __main__ - ERROR - 应用程序启动失败: 'list' object has no attribute 'items'
+Traceback (most recent call last):
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\main.py", line 91, in main
+    main_window = MainWindow(settings)
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 48, in __init__
+    self.init_ui()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 83, in init_ui
+    self.create_main_content(main_layout)
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 225, in create_main_content
+    right_panel = self.create_right_panel()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 290, in create_right_panel
+    self.model_widget = ModelWidget(self.model_manager)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 764, in __init__
+    self.init_ui()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 790, in init_ui
+    self.model_list_widget = ModelListWidget(self.model_manager)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 536, in __init__
+    self.init_ui()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 591, in init_ui
+    self.refresh_models()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 600, in refresh_models
+    for model_id, model_info in self.models.items():
+                                ^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'items'
+2025-12-11 17:27:18,568 - core.model_manager - INFO - 正在清理模型管理器...
+2025-12-11 17:27:18,568 - core.model_manager - INFO - 推理已停止
+2025-12-11 17:27:18,568 - core.model_manager - INFO - 模型管理器清理完成
+2025-12-11 17:27:18,568 - core.data_manager - INFO - 正在清理数据管理器...
+2025-12-11 17:27:18,570 - core.data_manager - INFO - 数据库连接已关闭
+2025-12-11 17:27:18,570 - core.data_manager - INFO - 数据管理器清理完成
+2025-12-11 17:27:18,572 - config.settings - INFO - 保存配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-11 17:27:18,577 - config.settings - WARNING - 保存Qt设置失败: wrapped C/C++ object of type QSettings has been deleted
+2025-12-11 17:27:18,577 - config.settings - ERROR - 保存配置失败: wrapped C/C++ object of type Settings has been deleted
+2025-12-11 17:27:18,577 - config.settings - ERROR - 配置管理器清理失败: wrapped C/C++ object of type Settings has been deleted
+2025-12-11 21:30:15,609 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-11 21:30:15,651 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-11 21:30:15,664 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-11 21:30:15,664 - config.settings - INFO - 配置加载成功
+2025-12-11 21:30:15,664 - config.settings - INFO - 配置管理器初始化完成
+2025-12-11 21:30:15,664 - __main__ - INFO - 初始化主窗口
+2025-12-11 21:30:15,666 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-11 21:30:15,667 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-11 21:30:15,667 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-11 21:30:15,670 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-11 21:30:15,672 - core.data_manager - INFO - 数据库表创建成功
+2025-12-11 21:30:15,672 - core.data_manager - INFO - 数据库初始化成功
+2025-12-11 21:30:15,673 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-11 21:30:15,705 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-11 21:30:15,724 - __main__ - ERROR - 应用程序启动失败: decorated slot has no signature compatible with ModelManager.performance_updated[str, object]
+Traceback (most recent call last):
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\main.py", line 91, in main
+    main_window = MainWindow(settings)
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 48, in __init__
+    self.init_ui()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 83, in init_ui
+    self.create_main_content(main_layout)
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 225, in create_main_content
+    right_panel = self.create_right_panel()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 290, in create_right_panel
+    self.model_widget = ModelWidget(self.model_manager)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 782, in __init__
+    self.connect_signals()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 908, in connect_signals
+    self.model_manager.performance_updated.connect(self.on_performance_updated)
+TypeError: decorated slot has no signature compatible with ModelManager.performance_updated[str, object]
+2025-12-11 21:30:15,727 - core.model_manager - INFO - 正在清理模型管理器...
+2025-12-11 21:30:15,727 - core.model_manager - INFO - 推理已停止
+2025-12-11 21:30:15,727 - core.model_manager - INFO - 模型管理器清理完成
+2025-12-11 21:30:15,727 - core.data_manager - INFO - 正在清理数据管理器...
+2025-12-11 21:30:15,729 - core.data_manager - INFO - 数据库连接已关闭
+2025-12-11 21:30:15,729 - core.data_manager - INFO - 数据管理器清理完成
+2025-12-11 21:30:15,731 - config.settings - INFO - 保存配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-11 21:30:15,735 - config.settings - WARNING - 保存Qt设置失败: wrapped C/C++ object of type QSettings has been deleted
+2025-12-11 21:30:15,735 - config.settings - ERROR - 保存配置失败: wrapped C/C++ object of type Settings has been deleted
+2025-12-11 21:30:15,735 - config.settings - ERROR - 配置管理器清理失败: wrapped C/C++ object of type Settings has been deleted
+2025-12-12 09:04:36,977 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 09:04:37,006 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:04:37,017 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 09:04:37,017 - config.settings - INFO - 配置加载成功
+2025-12-12 09:04:37,018 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 09:04:37,018 - __main__ - INFO - 初始化主窗口
+2025-12-12 09:04:37,019 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 09:04:37,020 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 09:04:37,020 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 09:04:37,022 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 09:04:37,027 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 09:04:37,027 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 09:04:37,027 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 09:04:37,049 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 09:04:37,057 - __main__ - ERROR - 应用程序启动失败: decorated slot has no signature compatible with ModelManager.performance_updated[str, object]
+Traceback (most recent call last):
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\main.py", line 91, in main
+    main_window = MainWindow(settings)
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 48, in __init__
+    self.init_ui()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 83, in init_ui
+    self.create_main_content(main_layout)
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 225, in create_main_content
+    right_panel = self.create_right_panel()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 290, in create_right_panel
+    self.model_widget = ModelWidget(self.model_manager)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 782, in __init__
+    self.connect_signals()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 908, in connect_signals
+    self.model_manager.performance_updated.connect(self.on_performance_updated)
+TypeError: decorated slot has no signature compatible with ModelManager.performance_updated[str, object]
+2025-12-12 09:04:37,059 - core.model_manager - INFO - 正在清理模型管理器...
+2025-12-12 09:04:37,060 - core.model_manager - INFO - 推理已停止
+2025-12-12 09:04:37,060 - core.model_manager - INFO - 模型管理器清理完成
+2025-12-12 09:04:37,060 - core.data_manager - INFO - 正在清理数据管理器...
+2025-12-12 09:04:37,062 - core.data_manager - INFO - 数据库连接已关闭
+2025-12-12 09:04:37,062 - core.data_manager - INFO - 数据管理器清理完成
+2025-12-12 09:04:37,063 - config.settings - INFO - 保存配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:04:37,068 - config.settings - WARNING - 保存Qt设置失败: wrapped C/C++ object of type QSettings has been deleted
+2025-12-12 09:04:37,069 - config.settings - ERROR - 保存配置失败: wrapped C/C++ object of type Settings has been deleted
+2025-12-12 09:04:37,069 - config.settings - ERROR - 配置管理器清理失败: wrapped C/C++ object of type Settings has been deleted
+2025-12-12 09:08:34,026 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 09:08:34,053 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:08:34,065 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 09:08:34,066 - config.settings - INFO - 配置加载成功
+2025-12-12 09:08:34,066 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 09:08:34,066 - __main__ - INFO - 初始化主窗口
+2025-12-12 09:08:34,067 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 09:08:34,068 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 09:08:34,068 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 09:08:34,070 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 09:08:34,075 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 09:08:34,076 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 09:08:34,076 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 09:08:34,095 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 09:08:34,104 - __main__ - ERROR - 应用程序启动失败: decorated slot has no signature compatible with ModelManager.performance_updated[str, object]
+Traceback (most recent call last):
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\main.py", line 91, in main
+    main_window = MainWindow(settings)
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 48, in __init__
+    self.init_ui()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 83, in init_ui
+    self.create_main_content(main_layout)
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 225, in create_main_content
+    right_panel = self.create_right_panel()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\main_window.py", line 290, in create_right_panel
+    self.model_widget = ModelWidget(self.model_manager)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 782, in __init__
+    self.connect_signals()
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\UI\model_widget.py", line 909, in connect_signals
+    self.model_manager.performance_updated.connect(self.on_performance_updated)
+TypeError: decorated slot has no signature compatible with ModelManager.performance_updated[str, object]
+2025-12-12 09:08:34,106 - core.model_manager - INFO - 正在清理模型管理器...
+2025-12-12 09:08:34,107 - core.model_manager - INFO - 推理已停止
+2025-12-12 09:08:34,107 - core.model_manager - INFO - 模型管理器清理完成
+2025-12-12 09:08:34,107 - core.data_manager - INFO - 正在清理数据管理器...
+2025-12-12 09:08:34,109 - core.data_manager - INFO - 数据库连接已关闭
+2025-12-12 09:08:34,109 - core.data_manager - INFO - 数据管理器清理完成
+2025-12-12 09:08:34,110 - config.settings - INFO - 保存配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:08:34,115 - config.settings - WARNING - 保存Qt设置失败: wrapped C/C++ object of type QSettings has been deleted
+2025-12-12 09:08:34,115 - config.settings - ERROR - 保存配置失败: wrapped C/C++ object of type Settings has been deleted
+2025-12-12 09:08:34,116 - config.settings - ERROR - 配置管理器清理失败: wrapped C/C++ object of type Settings has been deleted
+2025-12-12 09:08:59,057 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 09:08:59,084 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:08:59,095 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 09:08:59,095 - config.settings - INFO - 配置加载成功
+2025-12-12 09:08:59,096 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 09:08:59,096 - __main__ - INFO - 初始化主窗口
+2025-12-12 09:08:59,098 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 09:08:59,098 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 09:08:59,099 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 09:08:59,101 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 09:08:59,106 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 09:08:59,106 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 09:08:59,106 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 09:08:59,125 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 09:08:59,134 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 09:08:59,159 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 09:08:59,160 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 09:08:59,252 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 09:08:59,320 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 09:08:59,332 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 09:09:26,516 - UI.camera_widget - INFO - 刷新摄像头列表
+2025-12-12 09:10:24,990 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 09:10:25,019 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:10:25,024 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 09:10:25,024 - config.settings - INFO - 配置加载成功
+2025-12-12 09:10:25,024 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 09:10:25,025 - __main__ - INFO - 初始化主窗口
+2025-12-12 09:10:25,026 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 09:10:25,026 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 09:10:25,026 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 09:10:25,041 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 09:10:25,041 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 09:10:25,041 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 09:10:25,041 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 09:10:25,064 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 09:10:25,073 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 09:10:25,083 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 09:10:25,084 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 09:10:25,119 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 09:10:25,168 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 09:10:25,186 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 09:10:29,791 - UI.camera_widget - INFO - 刷新摄像头列表
+2025-12-12 09:10:47,524 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 09:10:47,526 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 09:10:47,526 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 09:10:47,526 - core.camera_manager - ERROR - 连接摄像头失败: CameraManager.camera_connected[str, object].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:10:47,526 - UI.camera_widget - ERROR - 摄像头连接错误: CameraManager.camera_error[str, str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:19:52,741 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 09:19:52,769 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:19:52,774 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 09:19:52,774 - config.settings - INFO - 配置加载成功
+2025-12-12 09:19:52,774 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 09:19:52,775 - __main__ - INFO - 初始化主窗口
+2025-12-12 09:19:52,776 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 09:19:52,776 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 09:19:52,776 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 09:19:52,789 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 09:19:52,789 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 09:19:52,790 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 09:19:52,790 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 09:19:52,810 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 09:19:52,817 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 09:19:52,826 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 09:19:52,826 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 09:19:52,870 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 09:19:52,915 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 09:19:52,928 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 09:20:13,206 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 09:20:13,210 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 09:20:13,210 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 09:20:13,210 - core.camera_manager - ERROR - 连接摄像头失败: CameraManager.camera_connected[str, object].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:20:13,211 - UI.camera_widget - ERROR - 摄像头连接错误: CameraManager.camera_error[str, str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:20:26,819 - core.camera_manager.usb - INFO - USB摄像头 0 已断开
+2025-12-12 09:20:26,820 - core.camera_manager - ERROR - 断开摄像头失败: CameraManager.camera_disconnected[str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:20:29,137 - UI.camera_widget - INFO - 摄像头已断开
+2025-12-12 09:20:32,350 - UI.camera_widget - INFO - 刷新摄像头列表
+2025-12-12 09:20:43,012 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 09:20:43,015 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 09:20:43,016 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 09:20:43,016 - core.camera_manager - ERROR - 连接摄像头失败: CameraManager.camera_connected[str, object].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:20:43,017 - UI.camera_widget - ERROR - 摄像头连接错误: CameraManager.camera_error[str, str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:20:49,129 - core.camera_manager.usb - INFO - USB摄像头 0 已断开
+2025-12-12 09:20:49,129 - core.camera_manager - ERROR - 断开摄像头失败: CameraManager.camera_disconnected[str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:20:49,129 - UI.camera_widget - ERROR - 摄像头断开错误: CameraManager.camera_error[str, str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:21:14,629 - UI.analysis_widget - ERROR - 应用范围过滤错误: 'DataManager' object has no attribute 'get_data_by_date_range'
+2025-12-12 09:21:20,142 - UI.analysis_widget - ERROR - 应用范围过滤错误: 'DataManager' object has no attribute 'get_data_by_date_range'
+2025-12-12 09:26:43,716 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 09:26:43,745 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:26:43,750 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 09:26:43,750 - config.settings - INFO - 配置加载成功
+2025-12-12 09:26:43,750 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 09:26:43,750 - __main__ - INFO - 初始化主窗口
+2025-12-12 09:26:43,751 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 09:26:43,752 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 09:26:43,752 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 09:26:43,766 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 09:26:43,766 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 09:26:43,766 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 09:26:43,766 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 09:26:43,787 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 09:26:43,796 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 09:26:43,806 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 09:26:43,807 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 09:26:43,846 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 09:26:43,889 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 09:26:43,899 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 09:26:56,553 - core.camera_manager.usb - WARNING - 无法设置伽马
+2025-12-12 09:26:56,556 - core.camera_manager.usb - WARNING - 部分摄像头设置更新失败
+2025-12-12 09:26:56,556 - core.camera_manager.usb - INFO - USB摄像头 0 连接成功
+2025-12-12 09:26:56,556 - core.camera_manager - ERROR - 连接摄像头失败: CameraManager.camera_connected[str, object].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:26:56,556 - UI.camera_widget - ERROR - 摄像头连接错误: CameraManager.camera_error[str, str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:27:15,773 - core.camera_manager.usb - INFO - USB摄像头 0 已断开
+2025-12-12 09:27:15,774 - core.camera_manager - ERROR - 断开摄像头失败: CameraManager.camera_disconnected[str].emit(): argument 1 has unexpected type 'int'
+2025-12-12 09:32:32,781 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 09:32:32,809 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:32:32,814 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 09:32:32,815 - config.settings - INFO - 配置加载成功
+2025-12-12 09:32:32,815 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 09:32:32,815 - __main__ - INFO - 初始化主窗口
+2025-12-12 09:32:32,816 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 09:32:32,817 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 09:32:32,817 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 09:32:32,832 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 09:32:32,832 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 09:32:32,833 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 09:32:32,833 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 09:32:32,854 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 09:32:32,861 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 09:32:32,872 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 09:32:32,872 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 09:32:32,909 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 09:32:32,955 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 09:32:32,968 - __main__ - INFO - 应用程序启动完成，进入事件循环
+2025-12-12 09:33:27,404 - UI.camera_widget - INFO - 刷新摄像头列表
+2025-12-12 09:33:31,746 - UI.camera_widget - INFO - 刷新摄像头列表
+2025-12-12 09:49:38,884 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 09:49:38,906 - __main__ - ERROR - 应用程序启动失败: type object 'ApplicationAttribute' has no attribute 'AA_EnableHighDpiScaling'
+Traceback (most recent call last):
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\main.py", line 83, in main
+    setup_application_style(app)
+  File "c:\Users\29814\Industrial_assembly_line_simulation\interface\main.py", line 65, in setup_application_style
+    app.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling, True)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'ApplicationAttribute' has no attribute 'AA_EnableHighDpiScaling'
+2025-12-12 09:49:52,919 - __main__ - INFO - 启动工业视觉检测系统
+2025-12-12 09:49:52,947 - config.settings - INFO - 加载配置文件: C:\Users\29814\AppData\Roaming\IndustrialVision\config.yaml
+2025-12-12 09:49:52,952 - config.settings - WARNING - 加载Qt设置失败: cannot access local variable 'state' where it is not associated with a value
+2025-12-12 09:49:52,952 - config.settings - INFO - 配置加载成功
+2025-12-12 09:49:52,952 - config.settings - INFO - 配置管理器初始化完成
+2025-12-12 09:49:52,952 - __main__ - INFO - 初始化主窗口
+2025-12-12 09:49:52,953 - core.camera_manager - INFO - 摄像头管理器初始化完成
+2025-12-12 09:49:52,954 - core.model_manager - INFO - 模型数据库不存在，将创建新数据库
+2025-12-12 09:49:52,954 - core.model_manager - INFO - 模型管理器初始化完成，模型目录: models
+2025-12-12 09:49:52,966 - core.data_manager - INFO - 数据库连接成功: data\inspection_data.db
+2025-12-12 09:49:52,967 - core.data_manager - INFO - 数据库表创建成功
+2025-12-12 09:49:52,967 - core.data_manager - INFO - 数据库初始化成功
+2025-12-12 09:49:52,967 - core.data_manager - INFO - 数据管理器初始化完成，数据目录: data
+2025-12-12 09:49:52,987 - UI.camera_widget - INFO - 摄像头组件初始化完成
+2025-12-12 09:49:52,995 - UI.model_widget - INFO - 模型组件初始化完成
+2025-12-12 09:49:53,004 - UI.analysis_widget - ERROR - 加载历史数据错误: 'DataManager' object has no attribute 'get_historical_data'
+2025-12-12 09:49:53,005 - UI.analysis_widget - INFO - 分析组件初始化完成
+2025-12-12 09:49:53,049 - UI.main_window - INFO - 主窗口初始化完成
+2025-12-12 09:49:53,098 - UI.main_window - INFO - 主窗口显示完成
+2025-12-12 09:49:53,111 - __main__ - INFO - 应用程序启动完成，进入事件循环
