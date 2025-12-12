@@ -23,6 +23,8 @@ from PyQt6.QtGui import (
     QImage, QPixmap, QPainter, QPen, QColor,
     QFont, QFontMetrics
 )
+from PyQt6.QtCore import QRect 
+from core.camera_manager import CameraSettings
 
 class VideoDisplayWidget(QFrame):
     """视频显示组件"""
@@ -141,46 +143,62 @@ class VideoDisplayWidget(QFrame):
             pixmap_rect = self.display_frame.rect()
             view_rect = self.rect()
             
+            # 修复这里：使用正确的缩放方法
             # 计算缩放以保持宽高比
-            pixmap_rect = pixmap_rect.scaled(view_rect.size(), 
-                                           Qt.AspectRatioMode.KeepAspectRatio)
+            scale = min(view_rect.width() / pixmap_rect.width(), 
+                    view_rect.height() / pixmap_rect.height())
+            
+            # 计算新的尺寸
+            new_width = int(pixmap_rect.width() * scale)
+            new_height = int(pixmap_rect.height() * scale)
             
             # 居中
-            x = (view_rect.width() - pixmap_rect.width()) // 2
-            y = (view_rect.height() - pixmap_rect.height()) // 2
-            pixmap_rect.moveTo(x, y)
+            x = (view_rect.width() - new_width) // 2
+            y = (view_rect.height() - new_height) // 2
+            
+            # 创建目标矩形
+            target_rect = QRect(x, y, new_width, new_height)
             
             # 绘制图像
-            painter.drawPixmap(pixmap_rect, self.display_frame, 
-                             self.display_frame.rect())
+            painter.drawPixmap(target_rect, self.display_frame, self.display_frame.rect())
             
             # 绘制ROI区域
             if self.roi_rect:
+                # 需要将ROI坐标转换为目标坐标系的坐标
+                roi_x = self.roi_rect[0] * scale + x
+                roi_y = self.roi_rect[1] * scale + y
+                roi_width = self.roi_rect[2] * scale
+                roi_height = self.roi_rect[3] * scale
+                
                 painter.setPen(QPen(QColor(0, 255, 0), 2))
-                painter.drawRect(*self.roi_rect)
+                painter.drawRect(int(roi_x), int(roi_y), int(roi_width), int(roi_height))
                 
                 # 显示ROI信息
                 if self.roi_rect[2] > 0 and self.roi_rect[3] > 0:
-                    info_text = f"ROI: {self.roi_rect[2]}x{self.roi_rect[3]}"
+                    info_text = f"ROI: {int(self.roi_rect[2])}x{int(self.roi_rect[3])}"
                     painter.setPen(QPen(QColor(255, 255, 255), 1))
                     painter.setFont(QFont("Arial", 10))
-                    painter.drawText(self.roi_rect[0] + 5, 
-                                   self.roi_rect[1] + 20, info_text)
+                    painter.drawText(int(roi_x) + 5, int(roi_y) + 20, info_text)
             
             # 绘制测量线
             if self.measure_line:
-                x1, y1, x2, y2 = self.measure_line
+                # 转换坐标
+                x1 = self.measure_line[0] * scale + x
+                y1 = self.measure_line[1] * scale + y
+                x2 = self.measure_line[2] * scale + x
+                y2 = self.measure_line[3] * scale + y
+                
                 painter.setPen(QPen(QColor(255, 0, 0), 2))
-                painter.drawLine(x1, y1, x2, y2)
+                painter.drawLine(int(x1), int(y1), int(x2), int(y2))
                 
                 # 绘制端点
                 painter.setBrush(QColor(255, 0, 0))
-                painter.drawEllipse(x1 - 3, y1 - 3, 6, 6)
-                painter.drawEllipse(x2 - 3, y2 - 3, 6, 6)
+                painter.drawEllipse(int(x1) - 3, int(y1) - 3, 6, 6)
+                painter.drawEllipse(int(x2) - 3, int(y2) - 3, 6, 6)
                 
                 # 计算并显示距离
-                dx = x2 - x1
-                dy = y2 - y1
+                dx = self.measure_line[2] - self.measure_line[0]
+                dy = self.measure_line[3] - self.measure_line[1]
                 pixel_distance = np.sqrt(dx*dx + dy*dy)
                 mm_distance = pixel_distance / self.calibration_data['pixel_per_mm']
                 
@@ -196,32 +214,32 @@ class VideoDisplayWidget(QFrame):
                 text_width = font_metrics.horizontalAdvance(distance_text)
                 text_height = font_metrics.height()
                 
-                bg_rect = (mid_x - text_width//2 - 5, mid_y - text_height - 5,
-                          text_width + 10, text_height + 5)
-                painter.fillRect(*bg_rect, QColor(0, 0, 0, 180))
-                painter.drawText(mid_x - text_width//2, mid_y - 5, distance_text)
+                bg_rect = QRect(int(mid_x - text_width//2 - 5), int(mid_y - text_height - 5),
+                            text_width + 10, text_height + 5)
+                painter.fillRect(bg_rect, QColor(0, 0, 0, 180))
+                painter.drawText(int(mid_x - text_width//2), int(mid_y - 5), distance_text)
             
             # 绘制网格
             if self.show_grid:
                 painter.setPen(QPen(QColor(100, 100, 100, 100), 1))
                 grid_size = 50
-                for x in range(pixmap_rect.left(), pixmap_rect.right(), grid_size):
-                    painter.drawLine(x, pixmap_rect.top(), x, pixmap_rect.bottom())
-                for y in range(pixmap_rect.top(), pixmap_rect.bottom(), grid_size):
-                    painter.drawLine(pixmap_rect.left(), y, pixmap_rect.right(), y)
+                for i in range(target_rect.left(), target_rect.right(), grid_size):
+                    painter.drawLine(i, target_rect.top(), i, target_rect.bottom())
+                for j in range(target_rect.top(), target_rect.bottom(), grid_size):
+                    painter.drawLine(target_rect.left(), j, target_rect.right(), j)
             
             # 绘制十字准线
             if self.show_crosshair:
-                center_x = pixmap_rect.center().x()
-                center_y = pixmap_rect.center().y()
+                center_x = target_rect.center().x()
+                center_y = target_rect.center().y()
                 painter.setPen(QPen(QColor(255, 255, 0, 150), 1))
-                painter.drawLine(center_x, pixmap_rect.top(), 
-                               center_x, pixmap_rect.bottom())
-                painter.drawLine(pixmap_rect.left(), center_y, 
-                               pixmap_rect.right(), center_y)
+                painter.drawLine(center_x, target_rect.top(), 
+                            center_x, target_rect.bottom())
+                painter.drawLine(target_rect.left(), center_y, 
+                            target_rect.right(), center_y)
             
             # 绘制信息覆盖层
-            self.draw_overlay(painter, pixmap_rect)
+            self.draw_overlay(painter, target_rect)
     
     def draw_overlay(self, painter, pixmap_rect):
         """绘制信息覆盖层"""
@@ -614,8 +632,35 @@ class CameraWidget(QWidget):
         self.frame_timer = QTimer()
         self.frame_timer.timeout.connect(self.update_frame)
         self.frame_timer.start(33)  # ~30 FPS
-        
+        self.logger.info(f"帧定时器启动，间隔: {self.frame_timer.interval()}ms")
+        self.auto_connect_camera()
         self.logger.info("摄像头组件初始化完成")
+
+    def auto_connect_camera(self):
+        """自动连接摄像头"""
+        try:
+            # 发现可用摄像头
+            cameras = self.camera_manager.discover_cameras()
+            self.logger.info(f"发现 {len(cameras)} 个可用摄像头")
+            
+            if cameras:
+                # 尝试连接第一个摄像头
+                camera_info = cameras[0]
+                camera_index = getattr(camera_info, 'device_id', 0)
+                
+                self.logger.info(f"尝试自动连接摄像头索引: {camera_index}")
+                
+                # 获取控制面板的默认设置
+                settings = self.control_panel.get_camera_settings()
+                resolution = settings.get('resolution', (640, 480))
+                fps = settings.get('fps', 30)
+                
+                self.connect_camera(camera_index, resolution, fps)
+            else:
+                self.logger.warning("未发现可用摄像头")
+                
+        except Exception as e:
+            self.logger.error(f"自动连接摄像头失败: {e}")
     
     def init_ui(self):
         """初始化UI"""
@@ -665,6 +710,13 @@ class CameraWidget(QWidget):
         layout = QHBoxLayout(toolbar)
         layout.setContentsMargins(5, 2, 5, 2)
         
+        # 摄像头状态显示
+        self.status_label = QLabel("状态: 未连接")
+        self.status_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(self.status_label)
+        
+        layout.addSpacing(10)
+        
         # 显示模式
         layout.addWidget(QLabel("显示模式:"))
         self.display_mode_combo = QComboBox()
@@ -672,7 +724,7 @@ class CameraWidget(QWidget):
         self.display_mode_combo.currentTextChanged.connect(
             lambda t: self.video_display.set_display_mode(
                 {"原始": "original", "灰度": "grayscale", 
-                 "边缘": "edges", "二值化": "binary"}[t]
+                "边缘": "edges", "二值化": "binary"}[t]
             )
         )
         layout.addWidget(self.display_mode_combo)
@@ -705,7 +757,7 @@ class CameraWidget(QWidget):
         self.debug_btn = QPushButton("调试")
         self.debug_btn.clicked.connect(self.debug_signal_connections)
         layout.addWidget(self.debug_btn)
-        
+
         self.roi_btn = QPushButton("ROI")
         self.roi_btn.clicked.connect(self.video_display.start_roi_selection)
         layout.addWidget(self.roi_btn)
@@ -871,49 +923,45 @@ class CameraWidget(QWidget):
         """摄像头设置变化处理"""
         action = settings.get('action')
         
+        self.logger.info(f"收到摄像头设置变化，action: {action}, settings: {settings}")
+        
         if action == 'connect':
             camera_index = settings.get('camera_index', 0)
-            self.connect_camera(camera_index)
+            
+            # 获取摄像头参数
+            resolution = settings.get('resolution', (640, 480))
+            fps = settings.get('fps', 30)
+            
+            self.logger.info(f"连接摄像头: index={camera_index}, resolution={resolution}, fps={fps}")
+            self.connect_camera(camera_index, resolution, fps)
+            
         elif action == 'disconnect':
             self.disconnect_camera()
         else:
             # 更新摄像头参数
             self.update_camera_parameters(settings)
     
-    def connect_camera(self, camera_index):
+    def connect_camera(self, camera_index, resolution=(640, 480), fps=30):
         """连接摄像头"""
         try:
-            # 生成摄像头ID
-            camera_id = f"usb_{camera_index}"
-            
-            self.logger.info(f"正在连接摄像头 {camera_id} (索引: {camera_index})")
-            
-            # 断开已连接的摄像头
-            if self.camera_manager.is_camera_connected():
-                self.camera_manager.disconnect_camera()
-            
-            # 连接新摄像头
-            if self.camera_manager.connect_camera(camera_id, "usb", device_id=camera_index):
+            if self.camera_manager.connect_camera(f"usb_{camera_index}", "usb", device_id=camera_index):
                 # 启动视频捕获
                 if self.camera_manager.start_capture():
                     self._camera_connected = True
                     self.camera_connected.emit()
                     self.camera_selected.emit(camera_index)
-                    self.logger.info(f"摄像头 {camera_index} 连接并启动成功")
-                    
-                    # 更新UI状态
-                    self.update_camera_status_display(True)
+                    self.logger.info(f"摄像头 {camera_index} 连接成功")
                 else:
-                    self.logger.error("启动视频捕获失败")
+                    self.logger.error(f"摄像头 {camera_index} 捕获启动失败")
                     self._camera_connected = False
-                    QMessageBox.critical(self, "摄像头错误", "启动视频捕获失败")
+                    QMessageBox.warning(self, "警告", "摄像头捕获启动失败")
             else:
                 self.logger.error(f"摄像头 {camera_index} 连接失败")
                 self._camera_connected = False
-                QMessageBox.critical(self, "摄像头错误", f"摄像头 {camera_index} 连接失败")
+                QMessageBox.warning(self, "警告", "摄像头连接失败")
                 
         except Exception as e:
-            self.logger.error(f"摄像头连接错误: {e}", exc_info=True)
+            self.logger.error(f"摄像头连接错误: {e}")
             QMessageBox.critical(self, "摄像头错误", f"连接失败: {str(e)}")
             self._camera_connected = False
 
@@ -944,19 +992,41 @@ class CameraWidget(QWidget):
             if hasattr(self.camera_manager, 'frame_received'):
                 self.logger.info("CameraManager 有 frame_received 信号")
                 
-                # 检查信号是否已连接
-                connected = self.camera_manager.frame_received.receivers() > 0
-                self.logger.info(f"frame_received 信号接收器数量: {self.camera_manager.frame_received.receivers()}")
-                self.logger.info(f"frame_received 信号已连接: {connected}")
+                # PyQt6 中不能直接获取 receivers，我们通过其他方式检查
+                # 检查信号是否被连接（通过检查是否有槽函数被调用）
+                signal_obj = self.camera_manager.frame_received
+                
+                # 获取信号连接的槽函数数量
+                # 在 PyQt6 中，我们需要通过 QObject 的 receivers 方法，但需要信号的方法索引
+                # 这里我们采用更简单的方法：检查信号是否可发射
+                try:
+                    # 尝试发射一个测试信号（使用空字典）
+                    # 注意：这可能会触发槽函数，所以需要小心
+                    test_data = {'test': 'debug_signal'}
+                    self.camera_manager.frame_received.emit(test_data)
+                    self.logger.info("frame_received 信号可以正常发射")
+                except Exception as e:
+                    self.logger.error(f"发射 frame_received 信号失败: {e}")
             else:
                 self.logger.error("CameraManager 没有 frame_received 信号！")
             
-            # 列出所有信号
+            # 列出 CameraManager 的所有信号
             signals = []
+            import inspect
             for attr_name in dir(self.camera_manager):
-                attr = getattr(self.camera_manager, attr_name)
-                if isinstance(attr, pyqtSignal):
-                    signals.append(attr_name)
+                if not attr_name.startswith('_'):
+                    try:
+                        attr = getattr(self.camera_manager, attr_name)
+                        # 检查是否是 pyqtSignal 类型
+                        if isinstance(attr, type) and hasattr(attr, '__get__'):
+                            # 检查是否是 pyqtSignal 描述符
+                            if hasattr(attr, 'signal'):
+                                signals.append(attr_name)
+                        elif hasattr(attr, 'connect'):
+                            # 检查是否有 connect 方法（可能是信号实例）
+                            signals.append(attr_name)
+                    except:
+                        pass
             
             self.logger.info(f"CameraManager 所有信号: {signals}")
             
@@ -965,10 +1035,26 @@ class CameraWidget(QWidget):
             self.logger.info(f"内部连接状态: {self._camera_connected}")
             self.logger.info(f"摄像头正在捕获: {self.camera_manager.is_capturing()}")
             
+            # 检查当前摄像头信息
+            camera_info = self.camera_manager.get_camera_info()
+            if camera_info:
+                if isinstance(camera_info, dict):
+                    self.logger.info(f"摄像头信息（字典）: {camera_info}")
+                else:
+                    self.logger.info(f"摄像头信息（对象）: {camera_info}")
+                    # 打印对象属性
+                    attrs = [attr for attr in dir(camera_info) if not attr.startswith('_')]
+                    self.logger.info(f"摄像头信息属性: {attrs}")
+            
+            # 检查定时器状态
+            if hasattr(self, 'frame_timer'):
+                self.logger.info(f"帧定时器活跃: {self.frame_timer.isActive()}")
+                self.logger.info(f"帧定时器间隔: {self.frame_timer.interval()}ms")
+            
             self.logger.info("=== 信号连接调试结束 ===")
             
         except Exception as e:
-            self.logger.error(f"调试信号连接时出错: {e}")
+            self.logger.error(f"调试信号连接时出错: {e}", exc_info=True)
 
     def disconnect_camera(self):
         """断开摄像头"""
@@ -1056,9 +1142,22 @@ class CameraWidget(QWidget):
     
     def update_frame(self):
         """更新帧显示"""
-        # 如果摄像头管理器有新的帧，会通过信号传递
-        # 这里主要处理非实时更新或手动刷新
-        pass
+        try:
+            # 修改这里：使用正确的方法名
+            if self.camera_manager.is_camera_connected():
+                # 从摄像头管理器获取帧
+                frame = self.camera_manager.capture_frame()
+                if frame is not None:
+                    # 处理图像（如果需要）
+                    processed_frame = self.process_frame(frame)
+                    # 更新显示
+                    self.video_display.set_frame(processed_frame)
+                    
+                    # 录制视频
+                    if self.is_recording and self.video_writer is not None:
+                        self.video_writer.write(processed_frame)
+        except Exception as e:
+            self.logger.error(f"更新帧错误: {e}")
     
     def capture_image(self):
         """捕获图像"""
@@ -1093,20 +1192,33 @@ class CameraWidget(QWidget):
     
     def start_recording(self):
         """开始录制视频"""
-        if not self.is_camera_connected():
+        if not self.is_camera_connected():  # 使用自己的方法
             QMessageBox.warning(self, "警告", "请先连接摄像头")
             self.control_panel.record_btn.setChecked(False)
             return
         
         try:
-            # 获取录制参数
-            width, height, fps = self.get_recording_parameters()
+            # 获取摄像头信息
+            camera_info = self.camera_manager.get_camera_info()
+            if not camera_info:
+                raise ValueError("无法获取摄像头信息")
             
             # 创建视频写入器
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"recording_{timestamp}.avi"
             save_path = Path("recordings") / filename
             save_path.parent.mkdir(exist_ok=True)
+            
+            # 从 CameraInfo 对象获取分辨率
+            if hasattr(camera_info, 'current_settings'):
+                width, height = camera_info.current_settings.resolution
+                fps = camera_info.current_settings.fps
+            elif hasattr(camera_info, 'capabilities'):
+                width = camera_info.capabilities.get('width', 640)
+                height = camera_info.capabilities.get('height', 480)
+                fps = camera_info.capabilities.get('fps', 30)
+            else:
+                width, height, fps = 640, 480, 30
             
             fourcc = cv2.VideoWriter_fourcc(*'XVID')
             self.video_writer = cv2.VideoWriter(
@@ -1121,7 +1233,7 @@ class CameraWidget(QWidget):
             
             # 更新UI
             self.recording_label.setText("● 录制中")
-            self.logger.info(f"开始录制视频: {save_path}, 分辨率: {width}x{height}, 帧率: {fps}")
+            self.logger.info(f"开始录制视频: {save_path}")
             
         except Exception as e:
             self.logger.error(f"开始录制错误: {e}")
@@ -1156,7 +1268,7 @@ class CameraWidget(QWidget):
 
     def is_camera_connected(self):
         """检查摄像头是否连接"""
-        return self._camera_connected
+        return self.camera_manager.is_camera_connected()
     
     def stop_recording(self):
         """停止录制视频"""

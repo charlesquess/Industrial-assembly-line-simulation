@@ -373,55 +373,90 @@ class USBCamera(BaseCamera):
     
     def _capture_loop(self):
         """捕获循环"""
+        consecutive_failures = 0
+        max_consecutive_failures = 10
+        
         while self.is_capturing:
             try:
                 with self._capture_lock:
-                    if self.cap is None:
-                        break
+                    if self.cap is None or not self.cap.isOpened():
+                        self.logger.warning("摄像头未打开，尝试重新连接...")
+                        time.sleep(1)
+                        # 尝试重新打开摄像头
+                        try:
+                            self.cap = cv2.VideoCapture(self.device_id, cv2.CAP_DSHOW)
+                            if not self.cap.isOpened():
+                                self.logger.error("重新连接摄像头失败")
+                                consecutive_failures += 1
+                                if consecutive_failures >= max_consecutive_failures:
+                                    self.logger.error("连续失败次数过多，停止捕获")
+                                    break
+                                time.sleep(0.1)
+                                continue
+                            consecutive_failures = 0
+                        except Exception as e:
+                            self.logger.error(f"重新连接摄像头异常: {e}")
+                            time.sleep(0.1)
+                            continue
                     
                     ret, frame = self.cap.read()
                     
                     if not ret:
-                        self.logger.warning("读取帧失败")
-                        time.sleep(0.01)
+                        consecutive_failures += 1
+                        self.logger.warning(f"读取帧失败 (连续失败: {consecutive_failures})")
+                        
+                        if consecutive_failures >= max_consecutive_failures:
+                            self.logger.error("连续读取帧失败次数过多，尝试重置摄像头")
+                            # 尝试重置
+                            if self.cap:
+                                self.cap.release()
+                            self.cap = cv2.VideoCapture(self.device_id, cv2.CAP_DSHOW)
+                            consecutive_failures = 0
+                        
+                        time.sleep(0.05)
                         continue
-                
-                # 计算帧率
-                self.frame_count += 1
-                elapsed_time = time.time() - self.start_time
-                fps = self.frame_count / elapsed_time if elapsed_time > 0 else 0
-                
-                # 获取当前设置
-                current_width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                current_height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                
-                # 创建帧信息
-                frame_info = FrameInfo(
-                    frame=frame.copy(),
-                    timestamp=datetime.now(),
-                    frame_id=self.frame_count,
-                    camera_id=self.camera_id,
-                    frame_size=(current_width, current_height),
-                    frame_rate=fps
-                )
-                
-                # 将帧放入队列（如果队列已满，则丢弃最旧的帧）
-                if self.frame_queue.full():
-                    try:
-                        self.frame_queue.get_nowait()
-                    except queue.Empty:
-                        pass
-                
-                self.frame_queue.put(frame_info)
-                
-                # 控制帧率
-                target_fps = self.current_settings.fps
-                if target_fps > 0:
-                    time.sleep(1.0 / target_fps)
                     
+                    # 重置连续失败计数
+                    consecutive_failures = 0
+                    
+                    # 计算帧率
+                    self.frame_count += 1
+                    elapsed_time = time.time() - self.start_time
+                    fps = self.frame_count / elapsed_time if elapsed_time > 0 else 0
+                    
+                    # 获取当前设置
+                    current_width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                    current_height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                    
+                    # 创建帧信息
+                    frame_info = FrameInfo(
+                        frame=frame.copy(),
+                        timestamp=datetime.now(),
+                        frame_id=self.frame_count,
+                        camera_id=self.camera_id,
+                        frame_size=(current_width, current_height),
+                        frame_rate=fps
+                    )
+                    
+                    # 将帧放入队列（如果队列已满，则丢弃最旧的帧）
+                    if self.frame_queue.full():
+                        try:
+                            self.frame_queue.get_nowait()
+                        except queue.Empty:
+                            pass
+                    
+                    self.frame_queue.put(frame_info)
+                    
+                    # 控制帧率
+                    target_fps = self.current_settings.fps
+                    if target_fps > 0:
+                        sleep_time = 1.0 / target_fps
+                        time.sleep(sleep_time)
+                        
             except Exception as e:
                 self.logger.error(f"捕获循环错误: {e}")
                 time.sleep(0.1)
+                consecutive_failures += 1
     
     def _get_camera_info(self) -> CameraInfo:
         """获取摄像头信息"""

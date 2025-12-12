@@ -341,9 +341,14 @@ class MainWindow(QMainWindow):
         self.camera_connected.connect(self.on_camera_connected)
         self.camera_disconnected.connect(self.on_camera_disconnected)
         
-        # 摄像头管理器的信号
+        # 连接摄像头管理器的信号
         self.camera_manager.frame_received.connect(self.on_frame_received)
         self.camera_manager.camera_error.connect(self.on_camera_error)
+        if hasattr(self.camera_manager, 'camera_connected'):
+            self.camera_manager.camera_connected.connect(self.on_camera_manager_connected)
+        
+        if hasattr(self.camera_manager, 'camera_disconnected'):
+            self.camera_manager.camera_disconnected.connect(self.on_camera_disconnected)
         
         # 模型管理器的信号
         self.model_manager.model_loaded.connect(self.on_model_loaded)
@@ -355,6 +360,11 @@ class MainWindow(QMainWindow):
         # 子组件的信号
         self.camera_widget.camera_selected.connect(self.on_camera_selected)
         self.model_widget.model_selected.connect(self.on_model_selected)
+
+    def on_camera_manager_connected(self, camera_id, camera_info_obj):
+        """处理CameraManager的连接信号"""
+        camera_name = camera_info_obj.name if hasattr(camera_info_obj, 'name') else f"摄像头 {camera_id}"
+        self.camera_connected.emit(camera_name)
 
     def load_settings(self):
         """加载窗口设置"""
@@ -402,26 +412,17 @@ class MainWindow(QMainWindow):
         # 更新摄像头信息
         camera_info = self.camera_manager.get_camera_info()
         if camera_info:
-            # 检查 camera_info 是字典还是对象
-            if isinstance(camera_info, dict):
-                # 如果是字典
-                width = camera_info.get('width', 'N/A')
-                height = camera_info.get('height', 'N/A')
+            # CameraInfo 是对象，不是字典
+            if hasattr(camera_info, 'current_settings') and hasattr(camera_info.current_settings, 'resolution'):
+                width, height = camera_info.current_settings.resolution
+                self.resolution_label.setText(f"分辨率: {width}x{height}")
+            elif hasattr(camera_info, 'capabilities'):
+                # 或者从 capabilities 获取
+                width = camera_info.capabilities.get('width', 'N/A')
+                height = camera_info.capabilities.get('height', 'N/A')
+                self.resolution_label.setText(f"分辨率: {width}x{height}")
             else:
-                # 如果是对象，访问属性
-                if hasattr(camera_info, 'capabilities'):
-                    caps = camera_info.capabilities
-                    if isinstance(caps, dict):
-                        width = caps.get('width', 'N/A')
-                        height = caps.get('height', 'N/A')
-                    else:
-                        width = 'N/A'
-                        height = 'N/A'
-                else:
-                    width = 'N/A'
-                    height = 'N/A'
-            
-            self.resolution_label.setText(f"分辨率: {width}x{height}")
+                self.resolution_label.setText("分辨率: N/A")
 
     def on_camera_disconnected(self):
         """摄像头断开连接处理"""
@@ -436,6 +437,12 @@ class MainWindow(QMainWindow):
     def on_frame_received(self, frame_info):
         """接收到新帧处理"""
         try:
+            fps = frame_info.get('fps', 0)
+            self.fps_label.setText(f"FPS: {fps:.1f}")
+            
+            # 将帧传递给 CameraWidget 显示
+            if hasattr(self, 'camera_widget') and self.camera_widget:
+                self.camera_widget.video_display.set_frame(frame_info.get('frame'))
             # 更新FPS显示
             fps = frame_info.get('fps', 0)
             if fps > 0:
@@ -523,33 +530,34 @@ class MainWindow(QMainWindow):
 
     def connect_camera(self):
         """连接摄像头"""
-        try:
-            # 获取可用摄像头列表
-            cameras = self.camera_manager.get_available_cameras()
-            
-            if not cameras:
-                QMessageBox.warning(self, "警告", "未检测到可用摄像头")
-                return
-            
-            # 选择第一个可用的摄像头
-            if cameras:
-                camera_info = cameras[0]
-                camera_id = camera_info['id']
-                
-                if self.camera_manager.connect_camera(camera_id, camera_info['type'], 
-                                                    device_id=camera_info['device_id']):
-                    # 启动视频捕获
-                    self.camera_manager.start_capture()
-                    
-                    # 更新状态
-                    self.camera_connected.emit(camera_info['name'])
-                    self.status_label.setText(f"摄像头 {camera_info['name']} 连接成功")
-                else:
-                    QMessageBox.critical(self, "错误", "摄像头连接失败")
+        # 获取可用摄像头列表
+        cameras = self.camera_manager.get_available_cameras()
         
-        except Exception as e:
-            self.logger.error(f"连接摄像头失败: {e}")
-            QMessageBox.critical(self, "错误", f"连接失败: {str(e)}")
+        if not cameras:
+            QMessageBox.warning(self, "警告", "未检测到可用摄像头")
+            return
+        
+        # 选择第一个摄像头
+        if cameras:
+            camera_info = cameras[0]  # 这是字典
+            camera_id = camera_info['id']  # 获取摄像头ID
+            
+            # 连接摄像头
+            success = self.camera_manager.connect_camera(camera_id, "usb", device_id=camera_info.get('device_id', 0))
+            
+            if success:
+                # 获取实际的 CameraInfo 对象
+                camera_info_obj = self.camera_manager.get_camera_info(camera_id)
+                camera_name = camera_info_obj.name if camera_info_obj else f"摄像头 {camera_id}"
+                
+                self.camera_connected.emit(camera_name)
+                
+                # 开始捕获视频
+                self.camera_manager.start_capture()
+                
+                self.logger.info(f"摄像头 {camera_id} 连接成功")
+            else:
+                QMessageBox.critical(self, "错误", "摄像头连接失败")
 
     def disconnect_camera(self):
         """断开摄像头"""
